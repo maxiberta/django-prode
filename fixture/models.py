@@ -27,6 +27,8 @@ class Team(models.Model):
         return u'%s' % (self.name,)
 
 class Forecast(models.Model):
+    class Meta:
+        unique_together = ('user', 'match')
     user = models.ForeignKey(User)
     match = models.ForeignKey("Match")
     team1_score = models.SmallIntegerField()
@@ -34,7 +36,6 @@ class Forecast(models.Model):
     def clean(self):
 	if datetime.datetime.now() >= self.match.start:
 	    raise ValidationError('The match has already started.')
-
     def score(self):
 	score = 0
 	if self.team1_score == self.match.team1_score and self.team2_score == self.match.team2_score:
@@ -47,4 +48,3 @@ class Forecast(models.Model):
 		score = score + 1
 	return score
 	
-
