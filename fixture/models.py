@@ -1,4 +1,7 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+import datetime
 
 class Tournament(models.Model):
     name = models.CharField(max_length=256, primary_key=True)
@@ -22,3 +25,26 @@ class Team(models.Model):
     name = models.CharField(max_length=64, primary_key=True)
     def __unicode__(self):
         return u'%s' % (self.name,)
+
+class Forecast(models.Model):
+    user = models.ForeignKey(User)
+    match = models.ForeignKey("Match")
+    team1_score = models.SmallIntegerField()
+    team2_score = models.SmallIntegerField()
+    def clean(self):
+	if datetime.datetime.now() >= self.match.start:
+	    raise ValidationError('The match has already started.')
+
+    def score(self):
+	score = 0
+	if self.team1_score == self.match.team1_score and self.team2_score == self.match.team2_score:
+		score = score + 1
+	if self.match.team1_score == self.match.team2_score and self.team1_score == self.team2_score:
+		score = score + 1
+	if self.match.team1_score > self.match.team2_score and self.team1_score > self.team2_score:
+		score = score + 1
+	if self.match.team1_score < self.match.team2_score and self.team1_score < self.team2_score:
+		score = score + 1
+	return score
+	
+

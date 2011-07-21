@@ -1,0 +1,35 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block branding %}
+<h1 id="site-name">Score Table</h1>
+
+{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+  <table>
+  <thead>
+  <tr>
+    {% for column in table.columns %}
+      {% if column.sortable %}
+        <th class="{% if column.is_ordered %}sorted{% endif %} {% if column.is_ordered_straight %}ascending{% endif %}{% if column.is_ordered_reverse %}descending{% endif %}"><a href="?sort={{ column.name_toggled }}">{{ column }}</a></th>
+      {% else %}
+        <th>{{ column }}</th>
+      {% endif %}
+    {% endfor %}
+  </tr>
+  </thead>
+
+  <tbody>
+    {% for row in table.rows %}
+        <tr>
+          {% for value in row %}<td class="table_value">{{ value }}</td>
+          {% endfor %}
+        </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
+
