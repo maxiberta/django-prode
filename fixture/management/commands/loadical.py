@@ -44,7 +44,7 @@ class Command(BaseCommand):
                         except Tournament.DoesNotExist as e:
                             tournament_instance = Tournament.objects.create(name=tournament)
                         match = Match(tournament=tournament_instance, start=start, location=location, team1=team1_instance, team2=team2_instance, team1_score=team1_score, team2_score=team2_score)
-                        if bool(Match.objects.filter(team1=team1_instance, team2=team2_instance, start__year=start.year, start__month=start.month, start__day=start.day)) or bool(Match.objects.filter(team1=team2_instance, team2=team2_instance, start__year=start.year, start__month=start.month, start__day=start.day)):
+                        if bool(Match.objects.filter(team1=team1_instance, team2=team2_instance, start__year=start.year, start__month=start.month, start__day=start.day)) or bool(Match.objects.filter(team1=team2_instance, team2=team1_instance, start__year=start.year, start__month=start.month, start__day=start.day)):
                             self.stdout.write('Found previous instance of "%s". Not importing!\n' % match)
                             continue
                         match.save()
