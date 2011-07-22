@@ -7,23 +7,24 @@ class TournamentAdmin(admin.ModelAdmin):
     list_display = ['name',]
 
 class MatchAdmin(admin.ModelAdmin):
-    list_display = ['tournament', '__unicode__', 'start', 'location']
+    list_display = ['tournament', '__unicode__', 'start', 'location', 'started']
     list_filter = ['tournament']
 
 class TeamAdmin(admin.ModelAdmin):
     list_display = ['name']
 
-class ForecastForm(ModelForm):
-    class Meta:
-        model = Forecast
-    def __init__(self, *args, **kwargs):
-        super(ForecastForm, self).__init__(*args, **kwargs)
-        self.fields['match'].queryset = Match.objects.filter(start__gt=datetime.datetime.now())
-
 class ForecastAdmin(admin.ModelAdmin):
-    list_display = ['user', 'match', 'team1_score','team2_score','score']
-    form = ForecastForm
+    list_display = ['user', 'match', 'team1_score','team2_score','score','editable']
+    def forecast_form_factory(self, user):
+        class ForecastForm(ModelForm):
+            class Meta:
+                model = Forecast
+            def __init__(self, *args, **kwargs):
+                super(ForecastForm, self).__init__(*args, **kwargs)
+                self.fields['match'].queryset = Match.objects.filter(start__gt=datetime.datetime.now()).exclude(forecast__user=user)
+        return ForecastForm
     def get_form(self, request, obj=None, **kwargs):
+        self.form = self.forecast_form_factory(request.user)
         if not request.user.is_superuser:
             kwargs['exclude'] = ['user']
         return super(ForecastAdmin, self).get_form(request, obj, **kwargs)

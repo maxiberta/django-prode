@@ -39,10 +39,13 @@ class Command(BaseCommand):
                             team2_instance = Team.objects.get(name=team2)
                         except Team.DoesNotExist as e:
                             team2_instance = Team.objects.create(name=team2)
-                        try:
-                            tournament_instance = Tournament.objects.get(name=tournament)
-                        except Tournament.DoesNotExist as e:
-                            tournament_instance = Tournament.objects.create(name=tournament)
+                        if tournament:
+                            try:
+                                tournament_instance = Tournament.objects.get(name=tournament)
+                            except Tournament.DoesNotExist as e:
+                                tournament_instance = Tournament.objects.create(name=tournament)
+                        else:
+                            tournament_instance = None
                         match = Match(tournament=tournament_instance, start=start, location=location, team1=team1_instance, team2=team2_instance, team1_score=team1_score, team2_score=team2_score)
                         if Match.objects.filter(team1=team1_instance, team2=team2_instance, start__year=start.year, start__month=start.month, start__day=start.day).exists() or Match.objects.filter(team1=team2_instance, team2=team1_instance, start__year=start.year, start__month=start.month, start__day=start.day).exists():
                             self.stdout.write('Found previous instance of "%s". Not importing!\n' % match)

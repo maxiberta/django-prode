@@ -17,7 +17,7 @@ def index(request):
 		scores.append({'user':user, 'score':sum([forecast.score() for forecast in Forecast.objects.filter(user=user)])})
 	for row in enumerate(sorted(scores, key=lambda xxx: xxx['score'], reverse=True), 1):
 		row[1]['position'] = row[0]
-		
+
         table = ScoreTable(scores)
-        return render_to_response('index.html',{"table":table}, context_instance=RequestContext(request))
+        return render_to_response('index.html', {"table":table}, context_instance=RequestContext(request))
 
