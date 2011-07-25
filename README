@@ -5,8 +5,8 @@ django-prode is a multiplayer sports forecast (aka. PRODE in Argentina) game for
 * Matches can be loaded from iCal (or manually), and associated with a tournament.
 * The frontend page shows the user score table in real time.
 
-Rules
------
+Game Rules
+----------
 * Players (users) are allowed to submit one forecast per not-yet-played match.
 * Players gain points by guessing the score perfectly (2 points) or the overall result (team1 wins, team2 wins or tie - 1 point).
 * On the end of the tournament the player with the most points is the winner.
@@ -31,7 +31,7 @@ Requirements
 
 TODO
 ----
-* Rules are hardcoded in fixture.models.Forecast.score(); they should be customizable
+* Game rules are hardcoded in fixture.models.Forecast.score(); they should be customizable
 * Dates and times (clients, server and matches) are presumed to be in UTC; time zones should be taken into account
 
 Authors
