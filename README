@@ -1,6 +1,7 @@
 Django PRODE
 ============
 django-prode is a multiplayer sports forecast (aka. PRODE in Argentina) game for Django.
+
 * Matches can be loaded from iCal (or manually), and associated with a tournament.
 * The frontend page shows the user score table in real time.
 
