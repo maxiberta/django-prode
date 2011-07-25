@@ -12,15 +12,21 @@ Rules
 
 Setup
 -----
-* Add django_prode into your settings.INSTALLED_APPS
+* Add django_prode into your settings.INSTALLED_APPS (and uncomment the admin app if necessary)
 * Download a tournament calendar in iCal format and import it with the "loadical" admin command::
     
-    # ./manage.py loadical <ical file>
+    # ./manage.py loadical <ical file> [-t <tournament name>]
+
+* Create staff users with at least add and change forecast permissions
+* Add the score table into your URLconf::
+
+    url(r'^$', include('django_prode.urls')),
 
 Requirements
 ------------
 - Django 1.3
 - django-tables
+- python-icalendar
 
 TODO
 ----
