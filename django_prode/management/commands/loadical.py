@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand, CommandError
 from optparse import make_option
 from icalendar import Calendar
 import re
-from fixture.models import *
+from django_prode.models import *
 
 class Command(BaseCommand):
     args = '<icalendar icalendar ...>'

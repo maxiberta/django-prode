@@ -1,4 +1,4 @@
-from fixture.models import *
+from django_prode.models import *
 from django.contrib import admin
 from django.forms.models import ModelForm
 import datetime

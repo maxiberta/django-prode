@@ -2,7 +2,7 @@
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 import django_tables as tables
-from fixture.models import *
+from django_prode.models import *
 
 def index(request):
         class ScoreTable(tables.MemoryTable):
