@@ -14,7 +14,7 @@ class TeamAdmin(admin.ModelAdmin):
     list_display = ['name']
 
 class ForecastAdmin(admin.ModelAdmin):
-    list_display = ['user', 'match', 'team1_score','team2_score','score','editable']
+    list_display = ['user', 'match', 'team1_score', 'team2_score', 'score', 'editable']
     def forecast_form_factory(self, user):
         class ForecastForm(ModelForm):
             class Meta:
