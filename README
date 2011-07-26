@@ -33,6 +33,7 @@ TODO
 ----
 * Game rules are hardcoded in fixture.models.Forecast.score(); they should be customizable
 * Dates and times (clients, server and matches) are presumed to be in UTC; time zones should be taken into account
+* i18n and l10n
 
 Authors
 -------
