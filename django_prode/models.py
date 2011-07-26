@@ -16,8 +16,8 @@ class Match(models.Model):
     location = models.CharField(max_length=1024, blank=True, null=True)
     team1 = models.ForeignKey('Team', related_name='matches1')
     team2 = models.ForeignKey('Team', related_name='matches2')
-    team1_score = models.SmallIntegerField(blank=True, null=True)
-    team2_score = models.SmallIntegerField(blank=True, null=True)
+    team1_score = models.PositiveSmallIntegerField(blank=True, null=True)
+    team2_score = models.PositiveSmallIntegerField(blank=True, null=True)
     def __unicode__(self):
         return u'%s : %s - %s' % (self.start.strftime('%Y-%m-%d %H:%M'), self.team1, self.team2) + '%s%s' % ((' (%s - ' % self.team1_score) if self.team1_score is not None else '', ('%s)' % self.team2_score) if self.team2_score is not None else '')
     def started(self):
@@ -34,8 +34,8 @@ class Forecast(models.Model):
         unique_together = ('user', 'match')
     user = models.ForeignKey(User)
     match = models.ForeignKey("Match")
-    team1_score = models.SmallIntegerField()
-    team2_score = models.SmallIntegerField()
+    team1_score = models.PositiveSmallIntegerField()
+    team2_score = models.PositiveSmallIntegerField()
     def editable(self):
         return not self.match.started()
     editable.boolean = True
