@@ -20,6 +20,9 @@ class Match(models.Model):
     team2_score = models.PositiveSmallIntegerField(blank=True, null=True)
     def __unicode__(self):
         return u'%s : %s - %s' % (self.start.strftime('%Y-%m-%d %H:%M'), self.team1, self.team2) + '%s%s' % ((' (%s - ' % self.team1_score) if self.team1_score is not None else '', ('%s)' % self.team2_score) if self.team2_score is not None else '')
+    def clean(self):
+        if self.team1 == self.team2:
+            raise ValidationError('Teams must be different.')
     def started(self):
         return datetime.datetime.now() >= self.start
     started.boolean = True
