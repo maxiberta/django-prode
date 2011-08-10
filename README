@@ -14,6 +14,10 @@ Game Rules
 Setup
 -----
 * Add django_prode into your settings.INSTALLED_APPS (and uncomment the admin app if necessary)
+* Sync de DB::
+
+    # ./manage.py syncdb
+
 * Download a tournament calendar in iCal format and import it with the "loadical" admin command::
     
     # ./manage.py loadical <ical file> [-t <tournament name>]
