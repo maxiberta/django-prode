@@ -14,7 +14,7 @@ Game Rules
 Setup
 -----
 * Add django_prode into your settings.INSTALLED_APPS (and uncomment the admin app if necessary)
-* Sync de DB::
+* Sync the DB::
 
     # ./manage.py syncdb
 
