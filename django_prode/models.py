@@ -12,19 +12,21 @@ class Match(models.Model):
     class Meta:
         verbose_name_plural = 'Matches'
     tournament = models.ForeignKey('Tournament', blank=True, null=True)
-    start = models.DateTimeField()
+    start = models.DateTimeField(blank=True, null=True)
     location = models.CharField(max_length=1024, blank=True, null=True)
     team1 = models.ForeignKey('Team', related_name='matches1')
     team2 = models.ForeignKey('Team', related_name='matches2')
     team1_score = models.PositiveSmallIntegerField(blank=True, null=True)
     team2_score = models.PositiveSmallIntegerField(blank=True, null=True)
     def __unicode__(self):
-        return u'%s : %s - %s' % (self.start.strftime('%Y-%m-%d %H:%M'), self.team1, self.team2) + '%s%s' % ((' (%s - ' % self.team1_score) if self.team1_score is not None else '', ('%s)' % self.team2_score) if self.team2_score is not None else '')
+        return u'%s : %s - %s' % (self.start.strftime('%Y-%m-%d %H:%M') if self.start else '????-??-?? ??:??', self.team1, self.team2) + '%s%s' % ((' (%s - ' % self.team1_score) if self.team1_score is not None else '', ('%s)' % self.team2_score) if self.team2_score is not None else '')
     def clean(self):
         if self.team1 == self.team2:
             raise ValidationError('Teams must be different.')
     def started(self):
-        return datetime.datetime.now() >= self.start
+        if self.start:
+            return datetime.datetime.now() >= self.start
+        return False
     started.boolean = True
 
 class Team(models.Model):

@@ -1,3 +1,5 @@
+# coding=utf-8
+
 from django.core.management.base import BaseCommand, CommandError
 from optparse import make_option
 from icalendar import Calendar
@@ -22,10 +24,13 @@ class Command(BaseCommand):
                 for component in cal.walk():
                     if component.name == "VEVENT":
                         summary = component.decoded('summary')
-                        start = component.decoded('dtstart')
+                        try:
+                            start = component.decoded('dtstart')
+                        except:
+                            start = None
                         location = component.decoded('location')
                         tournament = options['tournament']
-                        r_compiled = re.compile(r'^(?P<team1>[A-z\. ]+)(?P<team1_score>[0-9]*) v[s\.]* (?P<team2>[A-z\. ]+)(?P<team2_score>[0-9]*) .*$')
+                        r_compiled = re.compile(r'^(?P<team1>[A-záéíóú´\'\(\)\. ]+)(?P<team1_score>[0-9]*) v[s\.]* (?P<team2>[A-záéíóú´\'\(\)\. ]+)(?P<team2_score>[0-9]*).*$')
                         r = r_compiled.match(summary)
                         team1 = r.group('team1').strip()
                         team2 = r.group('team2').strip()
@@ -47,9 +52,10 @@ class Command(BaseCommand):
                         else:
                             tournament_instance = None
                         match = Match(tournament=tournament_instance, start=start, location=location, team1=team1_instance, team2=team2_instance, team1_score=team1_score, team2_score=team2_score)
-                        if Match.objects.filter(team1=team1_instance, team2=team2_instance, start__year=start.year, start__month=start.month, start__day=start.day).exists() or Match.objects.filter(team1=team2_instance, team2=team1_instance, start__year=start.year, start__month=start.month, start__day=start.day).exists():
-                            self.stdout.write('Found previous instance of "%s". Not importing!\n' % match)
-                            continue
+                        if start:
+                            if Match.objects.filter(team1=team1_instance, team2=team2_instance, start__year=start.year, start__month=start.month, start__day=start.day).exists() or Match.objects.filter(team1=team2_instance, team2=team1_instance, start__year=start.year, start__month=start.month, start__day=start.day).exists():
+                                self.stdout.write('Found previous instance of "%s". Not importing!\n' % match)
+                                continue
                         match.save()
 
             except Exception as e:
