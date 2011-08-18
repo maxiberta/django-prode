@@ -20,23 +20,17 @@ for table in soup('table'):
                 team1 = unicode(tr('td')[0].text)
                 result = unicode(tr('td')[1].text)
                 team2 = unicode(tr('td')[2].text)
-
                 event.add('location', tr('td')[3].text)
                 result_re = re.compile(r'^.*(\d+).*-.*(\d+).*$')
                 r = result_re.match(result)
                 if r:
                     team1_score = int(r.groups()[0])
                     team2_score = int(r.groups()[1])
-                    event.add('summary', '%s %d v %s %d' % (team1, team1_score, team2, team2_score))
+                    event.add('summary', u'%s %d v %s %d' % (team1, team1_score, team2, team2_score))
                 else:
-                    event.add('summary', '%s v %s' % (team1, team2))
-
-
-
-
+                    event.add('summary', u'%s v %s' % (team1, team2))
                 if len(tr('td')) == 6:
                     last_start = dateutil.parser.parse(tr('td')[4].text, fuzzy=True)
-
                 if len(tr('td')) > 4:
                     try:
                         time = datetime.strptime(tr('td')[-1].text, '%H:%M')
@@ -44,9 +38,6 @@ for table in soup('table'):
                         event.add('dtstart', start)
                     except ValueError:
                         pass
-
-
                 cal.add_component(event)
 
 print cal.as_string()
-

@@ -18,7 +18,7 @@ Setup
 
     # ./manage.py syncdb
 
-* Download a tournament calendar in iCal format and import it with the "loadical" admin command::
+* Download a tournament calendar in iCal format and import it with the "loadical" admin command (the iCal file should be encoded in UTF-8)::
     
     # ./manage.py loadical <ical file> [-t <tournament name>]
 
